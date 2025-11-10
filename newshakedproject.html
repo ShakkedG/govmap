@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
+        <script type="text/javascript">
+            function initGovMap() {
+                govmap.createMap('map', {
+                    onClick: function (e) {
+                        console.log('onClick', e);
+                    },
+                    onPan: function (e) {
+                        console.log('onPan', e);
+                    },
+                    token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
+                    layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
+                    showXY: true,
+                    identifyOnClick: true,
+                    isEmbeddedToggle: true,
+                    background: "2",
+                    layersMode: 1,
+                    zoomButtons:false,
+                     center:{ x: 194366, y: 665500 } ,
+                    level :10,
+                    extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
+                });
+            }
+    </script>
+    </head>
+    <body>
+        <div id="map" style="width:1900px;height:900px;">
+        </div>
+    </body>
+</html>

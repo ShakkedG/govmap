@@ -20,10 +20,28 @@
                     layersMode: 1,
                     zoomButtons:false,
                      center:{ x: 194366, y: 665500 } ,
-                    level :10,
-                    extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
+                   
                 });
             }
+            function showExample(){
+            var params = {
+                continous: false,
+                drawType: govmap.drawType.Polygon,
+                filterLayer: false,
+                isZoomToExtent: true,
+                layers: ['GASSTATIONS'],
+                returnFields: {
+                    'GASSTATIONS': ['objectid','company']
+                },
+                selectOnMap: true,
+                whereClause: {
+                    'GASSTATIONS': "(name = 'רשף')"
+                },
+            }
+            govmap.selectFeaturesOnMap(params).then(function(response) {
+                console.log(response);
+            });
+        }
     </script>
     </head>
     <body>
@@ -31,4 +49,3 @@
         </div>
     </body>
 </html>
-

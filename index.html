@@ -32,11 +32,8 @@
                 drawType: govmap.drawType.Rectangle,
                 filterLayer: false,
                 isZoomToExtent: true,
-                layers: ["GASSTATIONS"],
-                returnFields: {
-                    'GASSTATIONS': []
-                },
-                selectOnMap: true
+                layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"]
+                // Remove returnFields to get all fields
             }
             
             console.log('Calling selectFeaturesOnMap with params:', params);
@@ -44,12 +41,34 @@
             govmap.selectFeaturesOnMap(params).then(function(response) {
                 console.log('SUCCESS - Response received:', response);
                 
-                // Display the results
+                // Count results per layer
                 var html = '<h3>תוצאות:</h3>';
-                html += '<p>נמצאו תוצאות!</p>';
-                html += '<pre style="max-height: 400px; overflow: auto;">' + 
-                        JSON.stringify(response, null, 2) + 
-                        '</pre>';
+                var totalCount = 0;
+                
+                for (var layer in response) {
+                    if (response.hasOwnProperty(layer) && Array.isArray(response[layer])) {
+                        var count = response[layer].length;
+                        totalCount += count;
+                        html += '<h4>' + layer + ': ' + count + ' פריטים</h4>';
+                        
+                        if (count > 0) {
+                            html += '<ul>';
+                            response[layer].forEach(function(item, index) {
+                                if (index < 5) { // Show only first 5 items per layer
+                                    html += '<li><pre>' + JSON.stringify(item, null, 2) + '</pre></li>';
+                                }
+                            });
+                            if (count > 5) {
+                                html += '<li>... ועוד ' + (count - 5) + ' פריטים</li>';
+                            }
+                            html += '</ul>';
+                        }
+                    }
+                }
+                
+                if (totalCount === 0) {
+                    html += '<p>לא נמצאו תוצאות באזור שנבחר</p>';
+                }
                 
                 document.getElementById('results').innerHTML = html;
             }).catch(function(error) {
@@ -63,7 +82,7 @@
 <body>
     <div id="map" style="width:900px;height:600px;"></div>
     <button onClick="showExample()">Show Example</button>
-    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;">
+    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9; max-height: 500px; overflow: auto;">
         לחץ על "Show Example" כדי להתחיל
     </div>
 </body>

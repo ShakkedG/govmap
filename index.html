@@ -40,9 +40,8 @@
             }
             govmap.selectFeaturesOnMap(params).then(function(response) {
                 console.log(response);
-                // Display as formatted JSON
-                document.getElementById('results').innerHTML = 
-                    '<pre>' + JSON.stringify(response, null, 2) + '</pre>';
+                // Automatically show results in a popup/alert or the map's built-in display
+                // The GovMap API should handle this automatically with selectOnMap: true
             });
         }
     </script>
@@ -50,6 +49,5 @@
 <body>
     <div id="map" style="width:900px;height:600px;"></div>
     <button onClick="showExample()">Show Example</button>
-    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
 </body>
 </html>

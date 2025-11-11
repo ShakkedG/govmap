@@ -34,7 +34,8 @@
                     'GASSTATIONS': ['objectid','company']
                 },
                 selectOnMap: true,
-                whereClause: true
+                whereClause: {
+                    'GASSTATIONS': "(name = 'רשף')"
                 }
             }
             govmap.selectFeaturesOnMap(params).then(function(response) {
@@ -50,4 +51,3 @@
     <button onClick="showExample()">Show Example</button>
 </body>
 </html>
-

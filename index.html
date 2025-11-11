@@ -29,19 +29,22 @@
                 drawType: govmap.drawType.Polygon,
                 filterLayer: false,
                 isZoomToExtent: true,
-                layers: ['GASSTATIONS'],
+                layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
                 returnFields: {
-                    'GASSTATIONS': ['objectid','company']
+                    'GASSTATIONS': ['objectid','company'],
+                    'PARCEL_HOKS': [],
+                    'KSHTANN_ASSETS': [],
+                    'bus_stops': [],
+                    'PARCEL_ALL': [],
+                    '219111': [],
+                    '219113': [],
+                    '219114': []
                 },
-                selectOnMap: true,
-                whereClause: {
-                    'GASSTATIONS': "(name = 'רשף')"
-                }
+                selectOnMap: true
             }
             govmap.selectFeaturesOnMap(params).then(function(response) {
                 console.log(response);
-                // Automatically show results in a popup/alert or the map's built-in display
-                // The GovMap API should handle this automatically with selectOnMap: true
+                // Automatically show results in the map's built-in display
             });
         }
     </script>

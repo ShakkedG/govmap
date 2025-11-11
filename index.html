@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
-        <script type="text/javascript">
-            function initGovMap() {
-                govmap.createMap('map', {
-                    onClick: function (e) {
-                        console.log('onClick', e);
-                    },
-                    onPan: function (e) {
-                        console.log('onPan', e);
-                    },
-                    token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
-                    layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
-                    showXY: true,
-                    identifyOnClick: true,
-                    isEmbeddedToggle: true,
-                    background: "2",
-                    layersMode: 1,
-                    zoomButtons:false,
-                     center:{ x: 194366, y: 665500 } ,
-                   
-                });
-            }
-            function showExample(){
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
+    <script type="text/javascript">
+        function initGovMap() {
+            govmap.createMap('map', {
+                onClick: function (e) {
+                    console.log('onClick', e);
+                },
+                onPan: function (e) {
+                    console.log('onPan', e);
+                },
+                token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
+                layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
+                showXY: true,
+                identifyOnClick: true,
+                isEmbeddedToggle: true,
+                background: "2",
+                layersMode: 1,
+                zoomButtons: false,
+                center: { x: 194366, y: 665500 }
+            });
+        }
+        
+        function showExample(){
             var params = {
-                continous: true,
+                continous: false,
                 drawType: govmap.drawType.Polygon,
                 filterLayer: false,
                 isZoomToExtent: true,
@@ -36,20 +36,20 @@
                 selectOnMap: true,
                 whereClause: {
                     'GASSTATIONS': "(name = 'רשף')"
-                },
+                }
             }
             govmap.selectFeaturesOnMap(params).then(function(response) {
                 console.log(response);
+                // Display as formatted JSON
+                document.getElementById('results').innerHTML = 
+                    '<pre>' + JSON.stringify(response, null, 2) + '</pre>';
             });
         }
     </script>
-    </head>
-    <body>
-        <div id="map" style="width:900px;height:600px;">
-             <button onClick="showExample()">Show Example</button>
-        </div>
-    </body>
+</head>
+<body>
+    <div id="map" style="width:900px;height:600px;"></div>
+    <button onClick="showExample()">Show Example</button>
+    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+</body>
 </html>
-
-
-

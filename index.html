@@ -26,12 +26,12 @@
         function showExample(){
             var params = {
                 continous: false,
-                drawType: govmap.drawType.Polygon,
+                drawType: govmap.drawType.Rectangle,
                 filterLayer: false,
                 isZoomToExtent: true,
                 layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
                 returnFields: {
-                    'GASSTATIONS': ['objectid','company'],
+                    'GASSTATIONS': [],
                     'PARCEL_HOKS': [],
                     'KSHTANN_ASSETS': [],
                     'bus_stops': [],
@@ -43,8 +43,19 @@
                 selectOnMap: true
             }
             govmap.selectFeaturesOnMap(params).then(function(response) {
-                console.log(response);
-                // Automatically show results in the map's built-in display
+                console.log('Response received:', response);
+                
+                // Display the results
+                var html = '<h3>תוצאות:</h3>';
+                html += '<pre style="max-height: 400px; overflow: auto;">' + 
+                        JSON.stringify(response, null, 2) + 
+                        '</pre>';
+                
+                document.getElementById('results').innerHTML = html;
+            }).catch(function(error) {
+                console.error('Error:', error);
+                document.getElementById('results').innerHTML = 
+                    '<p style="color:red;">שגיאה: ' + error + '</p>';
             });
         }
     </script>
@@ -52,5 +63,6 @@
 <body>
     <div id="map" style="width:900px;height:600px;"></div>
     <button onClick="showExample()">Show Example</button>
+    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;"></div>
 </body>
 </html>

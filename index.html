@@ -24,38 +24,38 @@
         }
         
         function showExample(){
+            console.log('showExample function called');
+            document.getElementById('results').innerHTML = '<p>מתחיל ציור מלבן... לחץ פעמיים על המפה כדי לסיים</p>';
+            
             var params = {
                 continous: false,
                 drawType: govmap.drawType.Rectangle,
                 filterLayer: false,
                 isZoomToExtent: true,
-                layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
+                layers: ["GASSTATIONS"],
                 returnFields: {
-                    'GASSTATIONS': [],
-                    'PARCEL_HOKS': [],
-                    'KSHTANN_ASSETS': [],
-                    'bus_stops': [],
-                    'PARCEL_ALL': [],
-                    '219111': [],
-                    '219113': [],
-                    '219114': []
+                    'GASSTATIONS': []
                 },
                 selectOnMap: true
             }
+            
+            console.log('Calling selectFeaturesOnMap with params:', params);
+            
             govmap.selectFeaturesOnMap(params).then(function(response) {
-                console.log('Response received:', response);
+                console.log('SUCCESS - Response received:', response);
                 
                 // Display the results
                 var html = '<h3>תוצאות:</h3>';
+                html += '<p>נמצאו תוצאות!</p>';
                 html += '<pre style="max-height: 400px; overflow: auto;">' + 
                         JSON.stringify(response, null, 2) + 
                         '</pre>';
                 
                 document.getElementById('results').innerHTML = html;
             }).catch(function(error) {
-                console.error('Error:', error);
+                console.error('ERROR caught:', error);
                 document.getElementById('results').innerHTML = 
-                    '<p style="color:red;">שגיאה: ' + error + '</p>';
+                    '<p style="color:red;">שגיאה: ' + JSON.stringify(error) + '</p>';
             });
         }
     </script>
@@ -63,6 +63,8 @@
 <body>
     <div id="map" style="width:900px;height:600px;"></div>
     <button onClick="showExample()">Show Example</button>
-    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;"></div>
+    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;">
+        לחץ על "Show Example" כדי להתחיל
+    </div>
 </body>
 </html>

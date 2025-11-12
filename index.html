@@ -1,169 +1,50 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-    <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
-    <script type="text/javascript">
-        function initGovMap() {
-            govmap.createMap('map', {
-                token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
-                layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
-                showXY: true,
-                identifyOnClick: true,
-                isEmbeddedToggle: false,
-                background: 2,
-                layersMode: 1,
-                zoomButtons:true,
-                level :9,
-                extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
-            });
-        }
-        
-        function showExample(){
-            var params = {
-                drawType: govmap.drawType.Rectangle,
-                layers: ['GASSTATIONS','PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL','219111','219113','219114']
-            }
-            
-            govmap.selectFeaturesOnMap(params).then(function(response) {
-                console.log('Full response:', response);
-                
-                var resultsDiv = document.getElementById('results');
-                resultsDiv.style.display = 'block';
-                
-                if (response) {
-                    var html = '<h3>תוצאות:</h3><pre>' + JSON.stringify(response, null, 2) + '</pre>';
-                    resultsDiv.innerHTML = html;
-                } else {
-                    resultsDiv.innerHTML = '<p>לא נמצאו תוצאות</p>';
-                }
-            }).catch(function(error) {
-                console.error('Error:', error);
-            });
-        }
-        
-        function zoomIn() {
-            govmap.zoomIn();
-        }
-        
-        function zoomOut() {
-            govmap.zoomOut();
-        }
-   </script>
-   <style>
-       body {
-           margin: 0;
-           padding: 0;
-           font-family: Arial, sans-serif;
-       }
-       #header {
-           position: absolute;
-           top: 0;
-           left: 0;
-           right: 0;
-           height: 80px;
-           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-           color: white;
-           display: flex;
-           align-items: center;
-           justify-content: space-between;
-           padding: 0 30px;
-           box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-           z-index: 1001;
-       }
-       #header h1 {
-           margin: 0;
-           font-size: 32px;
-           font-weight: bold;
-       }
-       #map-container {
-           position: relative;
-           width: 100vw;
-           height: 100vh;
-           padding-top: 80px;
-           box-sizing: border-box;
-       }
-       #map {
-           width: 100%;
-           height: 100%;
-       }
-       #button-container {
-           position: absolute;
-           top: 100px;
-           left: 20px;
-           z-index: 1000;
-       }
-       #showButton {
-           padding: 15px 30px;
-           font-size: 18px;
-           background-color: #4CAF50;
-           color: white;
-           border: none;
-           border-radius: 5px;
-           cursor: pointer;
-           box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-       }
-       #showButton:hover {
-           background-color: #45a049;
-       }
-       #zoom-controls {
-           position: absolute;
-           top: 100px;
-           right: 20px;
-           z-index: 1000;
-           display: flex;
-           flex-direction: column;
-           gap: 10px;
-       }
-       .zoom-button {
-           width: 50px;
-           height: 50px;
-           font-size: 24px;
-           font-weight: bold;
-           background-color: white;
-           color: #333;
-           border: 2px solid #ddd;
-           border-radius: 5px;
-           cursor: pointer;
-           box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-           display: flex;
-           align-items: center;
-           justify-content: center;
-       }
-       .zoom-button:hover {
-           background-color: #f0f0f0;
-           border-color: #999;
-       }
-       .zoom-button:active {
-           background-color: #e0e0e0;
-       }
-       #results {
-           position: absolute;
-           bottom: 20px;
-           left: 20px;
-           right: 20px;
-           max-height: 300px;
-           overflow: auto;
-           background: white;
-           padding: 15px;
-           border-radius: 5px;
-           box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-           z-index: 1000;
-           display: none;
-       }
-   </style>
- </head>
- <body>
-    <div id="header">
-        <h1>קיבוץ עינת</h1>
-        <div style="font-size: 18px;">אתר על ידי שקד גולן</div>
-    </div>
-    <div id="map-container">
-        <div id="button-container">
-            <button id="showButton" onClick="showExample()">בחר אזור במפה</button>
-        </div>
-        
-        <div id="map"></div>
-        <div id="results"></div>
-    </div>
- </body>
-</html>
+<!-- בתוך <head> נשארת הגרסה של הסקריפטים שלך ללא שינוי -->
+<style>
+  body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  #header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1001;
+  }
+  #header h1 { margin: 0; font-size: 32px; font-weight: bold; }
 
+  #map-container { position: relative; width: 100vw; height: 100vh; padding-top: 80px; box-sizing: border-box; }
+  #map { width: 100%; height: 100%; }
+
+  /* <-- השינוי כאן: מרכז הכפתור רוחבית מתחת לכותרת --> */
+  #button-container {
+    position: absolute;
+    top: 90px;                 /* מעט מתחת ל-header (header גבוה 80px) */
+    left: 50%;                 /* מרכז רוחבי של ה־viewport */
+    transform: translateX(-50%); /* להזיז חצי מרוחב הכפתור שמאלה כדי למרכז באמת */
+    z-index: 1000;
+  }
+  #showButton {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+  #showButton:hover { background-color: #45a049; }
+
+  #zoom-controls { position: absolute; top: 100px; right: 20px; z-index: 1000; display:flex; flex-direction:column; gap:10px; }
+  .zoom-button { width:50px; height:50px; font-size:24px; font-weight:bold; background:white; color:#333; border:2px solid #ddd; border-radius:5px; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; }
+  .zoom-button:hover { background:#f0f0f0; border-color:#999; }
+  .zoom-button:active { background:#e0e0e0; }
+
+  #results { position:absolute; bottom:20px; left:20px; right:20px; max-height:300px; overflow:auto; background:white; padding:15px; border-radius:5px; box-shadow:0 4px 6px rgba(0,0,0,0.3); z-index:1000; display:none; }
+</style>

@@ -5,7 +5,7 @@
         function initGovMap() {
             govmap.createMap('map', {
                 token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
-                layers: ["GASSTATIONS","PARCEL_HOKS","KSHTANN_ASSETS","bus_stops","PARCEL_ALL","219111","219113","219114"],
+                layers: ["GASSTATIONS"],
                 showXY: true,
                 identifyOnClick: true,
                 isEmbeddedToggle: false,
@@ -16,62 +16,18 @@
                 extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
             });
         }
+        
         function showExample(){
-            var params = {
-                continous: false,
-                drawType: govmap.drawType.Rectangle,
-                filterLayer: false,
-                isZoomToExtent: true,
-                layers: ['GASSTATIONS', 'PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL', '219111', '219113', '219114'],
-                returnFields: {
-                    'GASSTATIONS': ['objectid','company','name'],
-                    'PARCEL_HOKS': ['objectid'],
-                    'KSHTANN_ASSETS': ['objectid'],
-                    'bus_stops': ['objectid'],
-                    'PARCEL_ALL': ['objectid'],
-                    '219111': ['objectid'],
-                    '219113': ['objectid'],
-                    '219114': ['objectid']
-                },
-                selectOnMap: true
-            }
-            govmap.selectFeaturesOnMap(params).then(function(response) {
-                console.log('Response:', response);
-                
-                // Display results
-                var resultsDiv = document.getElementById('results');
-                if (!resultsDiv) {
-                    resultsDiv = document.createElement('div');
-                    resultsDiv.id = 'results';
-                    resultsDiv.style.cssText = 'margin-top: 20px; padding: 10px; border: 1px solid #ccc; max-height: 400px; overflow: auto;';
-                    document.body.appendChild(resultsDiv);
-                }
-                
-                var html = '<h3>תוצאות:</h3>';
-                var foundResults = false;
-                
-                for (var layer in response) {
-                    if (response[layer] && response[layer].length > 0) {
-                        foundResults = true;
-                        html += '<h4>' + layer + ' (' + response[layer].length + ' תוצאות)</h4>';
-                        html += '<pre>' + JSON.stringify(response[layer], null, 2) + '</pre>';
-                    }
-                }
-                
-                if (!foundResults) {
-                    html += '<p>לא נמצאו תוצאות באזור שנבחר</p>';
-                }
-                
-                resultsDiv.innerHTML = html;
-            }).catch(function(error) {
-                console.error('Error:', error);
+            // Simple rectangle draw without complex parameters
+            govmap.drawRect(function(geometry) {
+                console.log('Rectangle drawn:', geometry);
+                alert('מלבן נוצר! בדוק את הקונסול לפרטים');
             });
         }
    </script>
  </head>
  <body>
     <div id="map" style="width:600px;height:600px;"></div>
-    <button onClick="showExample()">Show Example2</button>
+    <button onClick="showExample()">Show Example</button>
  </body>
 </html>
-

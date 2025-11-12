@@ -11,7 +11,7 @@
                 isEmbeddedToggle: false,
                 background: 2,
                 layersMode: 1,
-                zoomButtons:false,
+                zoomButtons:true,
                 level :10,
                 extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
             });
@@ -38,6 +38,14 @@
             }).catch(function(error) {
                 console.error('Error:', error);
             });
+        }
+        
+        function zoomIn() {
+            govmap.zoomIn();
+        }
+        
+        function zoomOut() {
+            govmap.zoomOut();
         }
    </script>
    <style>
@@ -96,6 +104,37 @@
        #showButton:hover {
            background-color: #45a049;
        }
+       #zoom-controls {
+           position: absolute;
+           top: 100px;
+           right: 20px;
+           z-index: 1000;
+           display: flex;
+           flex-direction: column;
+           gap: 10px;
+       }
+       .zoom-button {
+           width: 50px;
+           height: 50px;
+           font-size: 24px;
+           font-weight: bold;
+           background-color: white;
+           color: #333;
+           border: 2px solid #ddd;
+           border-radius: 5px;
+           cursor: pointer;
+           box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+       .zoom-button:hover {
+           background-color: #f0f0f0;
+           border-color: #999;
+       }
+       .zoom-button:active {
+           background-color: #e0e0e0;
+       }
        #results {
            position: absolute;
            bottom: 20px;
@@ -114,13 +153,14 @@
  </head>
  <body>
     <div id="header">
-        <h1>מערכת מיפוי GovMap</h1>
-        <div style="font-size: 18px;">ניתוח שכבות מפה</div>
+        <h1>קיבוץ עינת</h1>
+        <div style="font-size: 18px;">אתר על ידי שקד גולן</div>
     </div>
     <div id="map-container">
         <div id="button-container">
             <button id="showButton" onClick="showExample()">בחר אזור במפה</button>
         </div>
+        
         <div id="map"></div>
         <div id="results"></div>
     </div>

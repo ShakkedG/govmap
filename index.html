@@ -22,15 +22,49 @@
                 drawType: govmap.drawType.Rectangle,
                 filterLayer: false,
                 isZoomToExtent: true,
-                layers: ['GASSTATIONS'],
+                layers: ['GASSTATIONS', 'PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL', '219111', '219113', '219114'],
                 returnFields: {
-                    'GASSTATIONS': ['objectid','company']
+                    'GASSTATIONS': ['objectid','company','name'],
+                    'PARCEL_HOKS': ['objectid'],
+                    'KSHTANN_ASSETS': ['objectid'],
+                    'bus_stops': ['objectid'],
+                    'PARCEL_ALL': ['objectid'],
+                    '219111': ['objectid'],
+                    '219113': ['objectid'],
+                    '219114': ['objectid']
                 },
-                selectOnMap: true,
-                whereClause: true,
+                selectOnMap: true
             }
             govmap.selectFeaturesOnMap(params).then(function(response) {
-                console.log(response);
+                console.log('Response:', response);
+                
+                // Display results
+                var resultsDiv = document.getElementById('results');
+                if (!resultsDiv) {
+                    resultsDiv = document.createElement('div');
+                    resultsDiv.id = 'results';
+                    resultsDiv.style.cssText = 'margin-top: 20px; padding: 10px; border: 1px solid #ccc; max-height: 400px; overflow: auto;';
+                    document.body.appendChild(resultsDiv);
+                }
+                
+                var html = '<h3>תוצאות:</h3>';
+                var foundResults = false;
+                
+                for (var layer in response) {
+                    if (response[layer] && response[layer].length > 0) {
+                        foundResults = true;
+                        html += '<h4>' + layer + ' (' + response[layer].length + ' תוצאות)</h4>';
+                        html += '<pre>' + JSON.stringify(response[layer], null, 2) + '</pre>';
+                    }
+                }
+                
+                if (!foundResults) {
+                    html += '<p>לא נמצאו תוצאות באזור שנבחר</p>';
+                }
+                
+                resultsDiv.innerHTML = html;
+            }).catch(function(error) {
+                console.error('Error:', error);
             });
         }
    </script>

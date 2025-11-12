@@ -5,12 +5,6 @@
     <script type="text/javascript">
         function initGovMap() {
             govmap.createMap('map', {
-                onClick: function (e) {
-                    console.log('onClick', e);
-                },
-                onPan: function (e) {
-                    console.log('onPan', e);
-                },
                 token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
                 layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
                 showXY: true,
@@ -24,66 +18,62 @@
         }
         
         function showExample(){
-            console.log('showExample function called');
-            document.getElementById('results').innerHTML = '<p>מתחיל ציור מלבן... לחץ פעמיים על המפה כדי לסיים</p>';
+            document.getElementById('results').innerHTML = '<p style="color:blue;">מתחיל... צייר מלבן על המפה</p>';
             
             var params = {
                 continous: false,
                 drawType: govmap.drawType.Rectangle,
-                filterLayer: false,
-                isZoomToExtent: true,
-                layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"]
-                // Remove returnFields to get all fields
+                layers: ['GASSTATIONS', 'PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL', '219111', '219113', '219114'],
+                selectOnMap: false,
+                isZoomToExtent: false,
+                filterLayer: false
             }
             
-            console.log('Calling selectFeaturesOnMap with params:', params);
-            
-            govmap.selectFeaturesOnMap(params).then(function(response) {
-                console.log('SUCCESS - Response received:', response);
-                
-                // Count results per layer
-                var html = '<h3>תוצאות:</h3>';
-                var totalCount = 0;
-                
-                for (var layer in response) {
-                    if (response.hasOwnProperty(layer) && Array.isArray(response[layer])) {
-                        var count = response[layer].length;
-                        totalCount += count;
-                        html += '<h4>' + layer + ': ' + count + ' פריטים</h4>';
-                        
-                        if (count > 0) {
-                            html += '<ul>';
-                            response[layer].forEach(function(item, index) {
-                                if (index < 5) { // Show only first 5 items per layer
-                                    html += '<li><pre>' + JSON.stringify(item, null, 2) + '</pre></li>';
-                                }
-                            });
-                            if (count > 5) {
-                                html += '<li>... ועוד ' + (count - 5) + ' פריטים</li>';
+            govmap.selectFeaturesOnMap(params)
+                .then(function(response) {
+                    console.log('Response received:', response);
+                    
+                    if (!response) {
+                        document.getElementById('results').innerHTML = '<p style="color:red;">לא התקבלה תגובה מהשרת</p>';
+                        return;
+                    }
+                    
+                    var html = '<h3>תוצאות:</h3>';
+                    var foundAny = false;
+                    
+                    // Go through each layer in the response
+                    for (var layerName in response) {
+                        if (response.hasOwnProperty(layerName)) {
+                            var features = response[layerName];
+                            if (features && features.length > 0) {
+                                foundAny = true;
+                                html += '<h4>' + layerName + ' (' + features.length + ' תוצאות)</h4>';
+                                html += '<pre style="max-height: 200px; overflow: auto; background: #f0f0f0; padding: 10px;">';
+                                html += JSON.stringify(features, null, 2);
+                                html += '</pre>';
                             }
-                            html += '</ul>';
                         }
                     }
-                }
-                
-                if (totalCount === 0) {
-                    html += '<p>לא נמצאו תוצאות באזור שנבחר</p>';
-                }
-                
-                document.getElementById('results').innerHTML = html;
-            }).catch(function(error) {
-                console.error('ERROR caught:', error);
-                document.getElementById('results').innerHTML = 
-                    '<p style="color:red;">שגיאה: ' + JSON.stringify(error) + '</p>';
-            });
+                    
+                    if (!foundAny) {
+                        html += '<p>לא נמצאו תוצאות באזור שנבחר. נסה לצייר מלבן גדול יותר או באזור אחר.</p>';
+                    }
+                    
+                    document.getElementById('results').innerHTML = html;
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    document.getElementById('results').innerHTML = 
+                        '<p style="color:red;">שגיאה: ' + (error.message || error) + '</p>';
+                });
         }
     </script>
 </head>
 <body>
     <div id="map" style="width:900px;height:600px;"></div>
-    <button onClick="showExample()">Show Example</button>
-    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9; max-height: 500px; overflow: auto;">
-        לחץ על "Show Example" כדי להתחיל
+    <button onClick="showExample()" style="padding: 10px 20px; font-size: 16px; margin-top: 10px;">Show Example</button>
+    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;">
+        לחץ על הכפתור ואז צייר מלבן על המפה
     </div>
 </body>
 </html>

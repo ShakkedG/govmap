@@ -1,1 +1,42 @@
-<html xmlns="http://www.w3.org/1999/xhtml"> <head>    <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>    <script type="text/javascript">        function initGovMap() {            govmap.createMap('map', {                token: 'YOUR_API_TOKEN',                layers: ["GASSTATIONS"],                showXY: true,                identifyOnClick: true,                isEmbeddedToggle: false,                background: 3,                layersMode: 1,                zoomButtons:false            });        }        function showExample(){            var params = {                continous: false,                drawType: govmap.drawType.Polygon,                filterLayer: false,                isZoomToExtent: true,                layers: ['GASSTATIONS'],                returnFields: {                    'GASSTATIONS': ['objectid','company']                },                selectOnMap: true,                whereClause: {                    'GASSTATIONS': "(name = 'רשף')"                },            }            govmap.selectFeaturesOnMap(params).then(function(response) {                console.log(response);            });        }   </script> </head> <body>    <div id="map" style="width:600px;height:600px;"></div>    <button onClick="showExample()">Show Example</button> </body></html> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+    <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
+    <script type="text/javascript">
+        function initGovMap() {
+            govmap.createMap('map', {
+                token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
+                layers: ["GASSTATIONS","PARCEL_HOKS","KSHTANN_ASSETS","bus_stops","PARCEL_ALL","219111","219113","219114"],
+                showXY: true,
+                identifyOnClick: true,
+                isEmbeddedToggle: false,
+                background: 2,
+                layersMode: 1,
+                zoomButtons:false,
+                 level :10,
+                    extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
+            });
+        }
+        function showExample(){
+            var params = {
+                continous: false,
+                drawType: govmap.drawType.Polygon,
+                filterLayer: false,
+                isZoomToExtent: true,
+                layers: ['GASSTATIONS'],
+                returnFields: {
+                    'GASSTATIONS': ['objectid','company']
+                },
+                selectOnMap: true,
+                whereClause: true,
+            }
+            govmap.selectFeaturesOnMap(params).then(function(response) {
+                console.log(response);
+            });
+        }
+   </script>
+ </head>
+ <body>
+    <div id="map" style="width:600px;height:600px;"></div>
+    <button onClick="showExample()">Show Example</button>
+ </body>
+</html>

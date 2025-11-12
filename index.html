@@ -1,75 +1,42 @@
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+ <head>
     <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
     <script type="text/javascript">
-        var map;
-        
         function initGovMap() {
-            map = govmap.createMap('map', {
-                token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
-                layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
+            govmap.createMap('map', {
+                token: 'YOUR_API_TOKEN',
+                layers: ["GASSTATIONS"],
                 showXY: true,
                 identifyOnClick: true,
-                isEmbeddedToggle: true,
-                background: "2",
+                isEmbeddedToggle: false,
+                background: 3,
                 layersMode: 1,
-                zoomButtons: false,
-                center: { x: 194366, y: 665500 },
-                onIdentify: function(result) {
-                    console.log('onIdentify result:', result);
-                    displayResults(result);
-                }
+                zoomButtons:false,
+                 level :10,
+                    extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
             });
         }
-        
-        function displayResults(result) {
-            if (!result || !result.results || result.results.length === 0) {
-                document.getElementById('results').innerHTML = '<p>לא נמצאו תוצאות</p>';
-                return;
-            }
-            
-            var html = '<h3>תוצאות (נמצאו ' + result.results.length + '):</h3>';
-            
-            result.results.forEach(function(item, index) {
-                html += '<div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #f9f9f9;">';
-                html += '<h4>פריט ' + (index + 1) + '</h4>';
-                html += '<pre style="max-height: 200px; overflow: auto;">' + JSON.stringify(item, null, 2) + '</pre>';
-                html += '</div>';
-            });
-            
-            document.getElementById('results').innerHTML = html;
-        }
-        
         function showExample(){
-            document.getElementById('results').innerHTML = '<p style="color:blue;">מתחיל ציור מלבן... לחץ על המפה כדי להתחיל</p>';
-            
-            govmap.drawRect({
-                callback: function(geometry) {
-                    console.log('Rectangle drawn:', geometry);
-                    document.getElementById('results').innerHTML = '<p style="color:green;">מלבן נוצר! מחפש תוצאות...</p>';
-                    
-                    // Try to identify features in the rectangle
-                    govmap.identify({
-                        geometry: geometry,
-                        layers: ['GASSTATIONS', 'PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL', '219111', '219113', '219114']
-                    }).then(function(response) {
-                        console.log('Identify response:', response);
-                        displayResults(response);
-                    }).catch(function(error) {
-                        console.error('Error:', error);
-                        document.getElementById('results').innerHTML = '<p style="color:red;">שגיאה: ' + error + '</p>';
-                    });
-                }
+            var params = {
+                continous: false,
+                drawType: govmap.drawType.Polygon,
+                filterLayer: false,
+                isZoomToExtent: true,
+                layers: ['GASSTATIONS'],
+                returnFields: {
+                    'GASSTATIONS': ['objectid','company']
+                },
+                selectOnMap: true,
+                whereClause: true,
+            }
+            govmap.selectFeaturesOnMap(params).then(function(response) {
+                console.log(response);
             });
         }
-    </script>
-</head>
-<body>
-    <div id="map" style="width:900px;height:600px;"></div>
-    <button onClick="showExample()" style="padding: 10px 20px; font-size: 16px; margin-top: 10px;">Show Example</button>
-    <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;">
-        לחץ על הכפתור כדי להתחיל לצייר מלבן
-    </div>
-</body>
+   </script>
+ </head>
+ <body>
+    <div id="map" style="width:600px;height:600px;"></div>
+    <button onClick="showExample()">Show Example</button>
+ </body>
 </html>

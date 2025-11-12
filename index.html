@@ -27,6 +27,8 @@
                 console.log('Full response:', response);
                 
                 var resultsDiv = document.getElementById('results');
+                resultsDiv.style.display = 'block';
+                
                 if (response) {
                     var html = '<h3>תוצאות:</h3><pre>' + JSON.stringify(response, null, 2) + '</pre>';
                     resultsDiv.innerHTML = html;
@@ -42,11 +44,34 @@
        body {
            margin: 0;
            padding: 0;
+           font-family: Arial, sans-serif;
+       }
+       #header {
+           position: absolute;
+           top: 0;
+           left: 0;
+           right: 0;
+           height: 80px;
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+           color: white;
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           padding: 0 30px;
+           box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+           z-index: 1001;
+       }
+       #header h1 {
+           margin: 0;
+           font-size: 32px;
+           font-weight: bold;
        }
        #map-container {
            position: relative;
            width: 100vw;
            height: 100vh;
+           padding-top: 80px;
+           box-sizing: border-box;
        }
        #map {
            width: 100%;
@@ -54,7 +79,7 @@
        }
        #button-container {
            position: absolute;
-           top: 20px;
+           top: 100px;
            left: 20px;
            z-index: 1000;
        }
@@ -83,16 +108,21 @@
            border-radius: 5px;
            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
            z-index: 1000;
+           display: none;
        }
    </style>
  </head>
  <body>
+    <div id="header">
+        <h1>מערכת מיפוי GovMap</h1>
+        <div style="font-size: 18px;">ניתוח שכבות מפה</div>
+    </div>
     <div id="map-container">
         <div id="button-container">
             <button id="showButton" onClick="showExample()">בחר אזור במפה</button>
         </div>
         <div id="map"></div>
-        <div id="results" style="display:none;"></div>
+        <div id="results"></div>
     </div>
  </body>
 </html>

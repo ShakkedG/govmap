@@ -3,8 +3,10 @@
 <head>
     <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
     <script type="text/javascript">
+        var map;
+        
         function initGovMap() {
-            govmap.createMap('map', {
+            map = govmap.createMap('map', {
                 token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
                 layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
                 showXY: true,
@@ -13,59 +15,53 @@
                 background: "2",
                 layersMode: 1,
                 zoomButtons: false,
-                center: { x: 194366, y: 665500 }
+                center: { x: 194366, y: 665500 },
+                onIdentify: function(result) {
+                    console.log('onIdentify result:', result);
+                    displayResults(result);
+                }
             });
         }
         
-        function showExample(){
-            document.getElementById('results').innerHTML = '<p style="color:blue;">מתחיל... צייר מלבן על המפה</p>';
-            
-            var params = {
-                continous: false,
-                drawType: govmap.drawType.Rectangle,
-                layers: ['GASSTATIONS', 'PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL', '219111', '219113', '219114'],
-                selectOnMap: false,
-                isZoomToExtent: false,
-                filterLayer: false
+        function displayResults(result) {
+            if (!result || !result.results || result.results.length === 0) {
+                document.getElementById('results').innerHTML = '<p>לא נמצאו תוצאות</p>';
+                return;
             }
             
-            govmap.selectFeaturesOnMap(params)
-                .then(function(response) {
-                    console.log('Response received:', response);
+            var html = '<h3>תוצאות (נמצאו ' + result.results.length + '):</h3>';
+            
+            result.results.forEach(function(item, index) {
+                html += '<div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #f9f9f9;">';
+                html += '<h4>פריט ' + (index + 1) + '</h4>';
+                html += '<pre style="max-height: 200px; overflow: auto;">' + JSON.stringify(item, null, 2) + '</pre>';
+                html += '</div>';
+            });
+            
+            document.getElementById('results').innerHTML = html;
+        }
+        
+        function showExample(){
+            document.getElementById('results').innerHTML = '<p style="color:blue;">מתחיל ציור מלבן... לחץ על המפה כדי להתחיל</p>';
+            
+            govmap.drawRect({
+                callback: function(geometry) {
+                    console.log('Rectangle drawn:', geometry);
+                    document.getElementById('results').innerHTML = '<p style="color:green;">מלבן נוצר! מחפש תוצאות...</p>';
                     
-                    if (!response) {
-                        document.getElementById('results').innerHTML = '<p style="color:red;">לא התקבלה תגובה מהשרת</p>';
-                        return;
-                    }
-                    
-                    var html = '<h3>תוצאות:</h3>';
-                    var foundAny = false;
-                    
-                    // Go through each layer in the response
-                    for (var layerName in response) {
-                        if (response.hasOwnProperty(layerName)) {
-                            var features = response[layerName];
-                            if (features && features.length > 0) {
-                                foundAny = true;
-                                html += '<h4>' + layerName + ' (' + features.length + ' תוצאות)</h4>';
-                                html += '<pre style="max-height: 200px; overflow: auto; background: #f0f0f0; padding: 10px;">';
-                                html += JSON.stringify(features, null, 2);
-                                html += '</pre>';
-                            }
-                        }
-                    }
-                    
-                    if (!foundAny) {
-                        html += '<p>לא נמצאו תוצאות באזור שנבחר. נסה לצייר מלבן גדול יותר או באזור אחר.</p>';
-                    }
-                    
-                    document.getElementById('results').innerHTML = html;
-                })
-                .catch(function(error) {
-                    console.error('Error:', error);
-                    document.getElementById('results').innerHTML = 
-                        '<p style="color:red;">שגיאה: ' + (error.message || error) + '</p>';
-                });
+                    // Try to identify features in the rectangle
+                    govmap.identify({
+                        geometry: geometry,
+                        layers: ['GASSTATIONS', 'PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL', '219111', '219113', '219114']
+                    }).then(function(response) {
+                        console.log('Identify response:', response);
+                        displayResults(response);
+                    }).catch(function(error) {
+                        console.error('Error:', error);
+                        document.getElementById('results').innerHTML = '<p style="color:red;">שגיאה: ' + error + '</p>';
+                    });
+                }
+            });
         }
     </script>
 </head>
@@ -73,7 +69,7 @@
     <div id="map" style="width:900px;height:600px;"></div>
     <button onClick="showExample()" style="padding: 10px 20px; font-size: 16px; margin-top: 10px;">Show Example</button>
     <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;">
-        לחץ על הכפתור ואז צייר מלבן על המפה
+        לחץ על הכפתור כדי להתחיל לצייר מלבן
     </div>
 </body>
 </html>

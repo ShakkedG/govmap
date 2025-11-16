@@ -9,18 +9,20 @@
                 showXY: true,
                 identifyOnClick: true,
                 isEmbeddedToggle: false,
-                background: 3,
+                background: "1",
                 layersMode: 1,
                 zoomButtons:false
             });
         }
         function showExample() {
-            govmap.setVisibleLayers(['GASSTATIONS', 'topocad_parcel_all'], [ 'bus_stops']);
+            govmap.geocode({keyword: 'הרוקמים', type: govmap.geocodeType.AccuracyOnly})
+            .then(function(response) {
+                console.log(response)
+            });
         }
    </script>
  </head>
  <body>
-    <div id="map" style="width:600px;height:600px;"></div>
     <button onClick="showExample()">Show Example</button>
  </body>
 </html>

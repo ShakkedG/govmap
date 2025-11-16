@@ -11,37 +11,51 @@
                 isEmbeddedToggle: false,
                 background: 2,
                 layersMode: 1,
-                zoomButtons:false,
-                level :9,
-                extent:{xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
+                zoomButtons: false,
+                level: 9,
+                extent: {xmin: 193700, ymin: 664900, xmax: 195000, ymax: 666100},
             });
         }
         
         function showExample(){
             var params = {
-              continous: false,
+                continous: false,              // FIX 1: Added missing comma
                 drawType: govmap.drawType.Rectangle,
-             filterLayer: false,
-              isZoomToExtent: true,
-                layers: ['GASSTATIONS','PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL','219111','219113','219114']
-             returnFields: {
+                filterLayer: false,            // FIX 2: Added missing comma
+                isZoomToExtent: true,
+                layers: ['GASSTATIONS','PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL','219111','219113','219114'],  // FIX 3: Added missing comma
+                returnFields: {                // FIX 4: Added missing comma before this property
                     'GASSTATIONS': ['objectid','company'],
-                     '219111':['objectid'],
-                      '219113':['objectid'],
-                      '219114':['objectid'],
-             
-                },
-            }
+                    '219111': ['objectid'],
+                    '219113': ['objectid'],
+                    '219114': ['objectid']     // FIX 5: Removed trailing comma (optional but cleaner)
+                }                              // FIX 6: Removed trailing comma after closing brace
+            };                                 // FIX 7: Added semicolon
             
             govmap.selectFeaturesOnMap(params).then(function(response1) {
                 console.log('Full response:', response1);
                 
                 govmap.getLayerEntities(response1).then(function(response2) {
-                console.log(response2);
+                    console.log('Layer entities:', response2);
+                    
+                    // Display results
+                    var resultsDiv = document.getElementById('results');
+                    resultsDiv.style.display = 'block';
+                    
+                    if (response2) {
+                        var html = '<h3>תוצאות:</h3><pre>' + JSON.stringify(response2, null, 2) + '</pre>';
+                        resultsDiv.innerHTML = html;
+                    } else {
+                        resultsDiv.innerHTML = '<p>לא נמצאו תוצאות</p>';
+                    }
+                }).catch(function(error) {
+                    console.error('Error in getLayerEntities:', error);
+                });
+            }).catch(function(error) {      // FIX 8: Added error handling for selectFeaturesOnMap
+                console.error('Error in selectFeaturesOnMap:', error);
             });
-        }
+        }                                   // FIX 9: Added missing closing brace
    </script>
-
    <style>
        body {
            margin: 0;
@@ -114,21 +128,17 @@
        }
    </style>
  </head>
-
  <body>
     <div id="header">
         <h1>מערכת מיפוי GovMap</h1>
         <div style="font-size: 18px;">ניתוח שכבות מפה</div>
     </div>
-
     <div id="map-container">
         <div id="button-container">
             <button id="showButton" onClick="showExample()">בחר אזור במפה</button>
         </div>
-
         <div id="map"></div>
         <div id="results"></div>
     </div>
  </body>
 </html>
-

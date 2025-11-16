@@ -32,10 +32,7 @@
                 }
             };
             
-            // Show loading message
             var resultsDiv = document.getElementById('results');
-            resultsDiv.style.display = 'block';
-            resultsDiv.innerHTML = '<p>מחפש תוצאות... (Searching...)</p>';
             
             govmap.selectFeaturesOnMap(params).then(function(response1) {
                 console.log('selectFeaturesOnMap response:', response1);

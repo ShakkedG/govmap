@@ -26,13 +26,25 @@ function toggleButton() {
     // If button turning red → enable drawing mode
     if (!btn.classList.contains('redButton')) {
         btn.classList.add('redButton');
-        showExample();  // start rectangle drawing
+     var params = { 
+        continous: false, 
+        drawType: govmap.drawType.Rectangle, 
+        filterLayer: false, 
+        isZoomToExtent: true, 
+        layers: [ 'PARCEL_ALL',"219111","219113","219114"], 
+        returnFields: { 
+            'PARCEL_ALL': [], 
+            "219111":['value0', 'value1', 'value2','value3','value4'],
+            "219113":['value0', 'value1', 'value2','value3','value4'],
+            "219114":['value0', 'value1', 'value2','value3','value4']
+            
+        } 
     }
 
     // If button turning back to green → stop drawing mode
     else {
         btn.classList.remove('redButton');
-        govmap.cancelDrawing();  // important: resets map drawing mode
+       
     }
     govmap.selectFeaturesOnMap(params).then(function(response1) {
   btn.classList.remove('redButton');
@@ -40,20 +52,7 @@ function toggleButton() {
 }
 
 //----------------------------------------
-function showExample(){ 
-    var params = { 
-        continous: false, 
-        drawType: govmap.drawType.Rectangle, 
-        filterLayer: false, 
-        isZoomToExtent: true, 
-        layers: ['GASSTATIONS','PARCEL_HOKS', 'KSHTANN_ASSETS', 'bus_stops', 'PARCEL_ALL','219111','219113','219114'], 
-        returnFields: { 
-            'GASSTATIONS': ['objectid','company'], 
-            '219111': ['objectid'], 
-            '219113': ['objectid'], 
-            '219114': ['objectid'] 
-        } 
-    }; 
+
     
     var resultsDiv = document.getElementById('results'); 
     
@@ -205,4 +204,5 @@ body {
 </div> 
 </body> 
 </html>
+
 

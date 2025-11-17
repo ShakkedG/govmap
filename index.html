@@ -34,6 +34,9 @@ function toggleButton() {
         btn.classList.remove('redButton');
         govmap.cancelDrawing();  // important: resets map drawing mode
     }
+    govmap.selectFeaturesOnMap(params).then(function(response1) {
+  btn.classList.remove('redButton');
+});
 }
 
 //----------------------------------------
@@ -202,3 +205,4 @@ body {
 </div> 
 </body> 
 </html>
+

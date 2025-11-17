@@ -27,19 +27,17 @@
         if (!btn.classList.contains('redButton')) {
             btn.classList.add('redButton');
 
-            var params = { 
-                continous: false, 
-                drawType: govmap.drawType.Rectangle, 
-                filterLayer: false, 
-                isZoomToExtent: true, 
-                layers: [ 'PARCEL_ALL',"219111","219113","219114"], 
-                returnFields: { 
-                    'PARCEL_ALL': [], 
-                    "219111": ['value0', 'value1', 'value2','value3','value4'],
-                    "219113": ['value0', 'value1', 'value2','value3','value4'],
-                    "219114": ['value0', 'value1', 'value2','value3','value4']
-                } 
-            };
+          var params = { 
+    continous: false,
+    drawType: govmap.drawType.Rectangle,
+    filterLayer: false,
+    isZoomToExtent: true,
+    layers: ["GASSTATIONS"],   // שכבה בסיסית שעבדה לך קודם
+    returnFields: {
+        "GASSTATIONS": ["objectid", "company"]
+    }
+};
+
 
             govmap.selectFeaturesOnMap(params).then(function(response1) { 
                 // אחרי שהמשתמש סיים לצייר מלבן
@@ -199,3 +197,4 @@
     </div> 
 </body> 
 </html>
+

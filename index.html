@@ -24,16 +24,19 @@
         if (!btn.classList.contains('redButton')) {
             btn.classList.add('redButton');
 
-            var params = { 
-                continous: false,
-                drawType: govmap.drawType.Rectangle,
-                filterLayer: false,
-                isZoomToExtent: true,
-                layers: ["GASSTATIONS"],
-                returnFields: {
-                    "GASSTATIONS": ["objectid", "company"]
-                }
-            };
+           var params = { 
+    continous: false,
+    drawType: govmap.drawType.Rectangle,
+    filterLayer: false,
+    isZoomToExtent: true,
+    layers: ["GASSTATIONS", "219111", "219113", "219114"],
+    returnFields: {
+        "GASSTATIONS": ["objectid", "company"],
+        "219111": ["objectid"],
+        "219113": ["objectid"],
+        "219114": ["objectid"]
+    }
+};
 
             govmap.selectFeaturesOnMap(params).then(function(response1) { 
                 btn.classList.remove('redButton');
@@ -240,3 +243,4 @@
     </div> 
 </body> 
 </html>
+

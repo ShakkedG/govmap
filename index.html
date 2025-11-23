@@ -43,7 +43,7 @@
                 
                 if (response1 && response1.length > 0) { 
                     var html = '<h3>תוצאות חיפוש:</h3>'; 
-                    html += '<p>נמצאו ' + response1.length + ' תחנות דלק באזור שנבחר</p>'; 
+                    html += '<p>נמצאו ' + response1.length + ' נקודות עניין באזור שנבחר</p>'; 
                     html += '<div style="margin-top: 15px;">';
                     
                     response1.forEach(function(station, index) {
@@ -60,15 +60,13 @@
                     
                     html += '</div>';
                     html += '<hr style="margin: 20px 0;">';
-                    html += '<details style="margin-top: 15px;">';
-                    html += '<summary style="cursor: pointer; color: #667eea; font-weight: bold;">📋 הצג נתונים גולמיים (JSON)</summary>';
-                    html += '<pre style="background: white; padding: 10px; border-radius: 5px; margin-top: 10px; overflow-x: auto;">' + JSON.stringify(response1, null, 2) + '</pre>';
-                    html += '</details>';
+                    html += '<h4 style="color: #667eea;">נתונים גולמיים</h4>';
+                    html += '<pre style="background: white; padding: 10px; border-radius: 5px; overflow-x: auto;">' + JSON.stringify(response1, null, 2) + '</pre>';
                     
                     resultsDiv.innerHTML = html; 
                     
                 } else { 
-                    resultsDiv.innerHTML = '<p style="color: #f44336;">❌ לא נמצאו תחנות דלק באזור שנבחר. נסה לבחור אזור אחר.</p>'; 
+                    resultsDiv.innerHTML = '<p style="color: #f44336;">❌ לא נמצאו נקודות עניין באזור שנבחר. נסה לבחור אזור אחר.</p>'; 
                 } 
                 
             }).catch(function(error) { 
@@ -181,6 +179,11 @@
         padding-bottom: 10px;
     }
 
+    #results h4 {
+        color: #667eea;
+        margin-bottom: 10px;
+    }
+
     #results p {
         color: #333;
         font-size: 16px;
@@ -199,21 +202,6 @@
         margin: 20px 0; 
         border: none; 
         border-top: 2px solid #e0e0e0; 
-    }
-
-    #results details {
-        cursor: pointer;
-    }
-
-    #results summary {
-        padding: 10px;
-        background: #f9f9f9;
-        border-radius: 5px;
-        user-select: none;
-    }
-
-    #results summary:hover {
-        background: #f0f0f0;
     }
 
     #results::-webkit-scrollbar {
@@ -238,8 +226,8 @@
 
 <body> 
     <div id="header"> 
-        <h1>מערכת מיפוי GovMap</h1> 
-        <div style="font-size: 18px;">ניתוח שכבות מפה - חיפוש תחנות דלק</div> 
+        <h1>שקד גולן GovMap</h1> 
+        <div style="font-size: 18px;">אתר קיבוץ עינת</div> 
     </div> 
 
     <div id="map-container"> 

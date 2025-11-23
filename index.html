@@ -29,9 +29,16 @@
                 drawType: govmap.drawType.Rectangle,
                 filterLayer: false,
                 isZoomToExtent: true,
-                layers: ["GASSTATIONS"],
+                layers: ["GASSTATIONS", "PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL", "219111", "219113", "219114"],
                 returnFields: {
-                    "GASSTATIONS": ["objectid", "company"]
+                    "GASSTATIONS": ["objectid", "company"],
+                    "PARCEL_HOKS": ["objectid"],
+                    "KSHTANN_ASSETS": ["objectid"],
+                    "bus_stops": ["objectid"],
+                    "PARCEL_ALL": ["objectid"],
+                    "219111": ["objectid"],
+                    "219113": ["objectid"],
+                    "219114": ["objectid"]
                 }
             };
 
@@ -43,30 +50,52 @@
                 
                 if (response1 && response1.length > 0) { 
                     var html = '<h3>תוצאות חיפוש:</h3>'; 
-                    html += '<p>נמצאו ' + response1.length + ' נקודות עניין באזור שנבחר</p>'; 
+                    
+                    var totalCount = 0;
+                    response1.forEach(function(layer) {
+                        if (layer.features && layer.features.length > 0) {
+                            totalCount += layer.features.length;
+                        }
+                    });
+                    
+                    html += '<p>נמצאו ' + totalCount + ' פריטים ב-' + response1.length + ' שכבות באזור שנבחר</p>'; 
                     html += '<div style="margin-top: 15px;">';
                     
-                    response1.forEach(function(station, index) {
-                        html += '<div style="background: #f0f0f0; padding: 12px; margin: 8px 0; border-radius: 5px; border-left: 4px solid #4CAF50;">';
-                        html += '<strong>נקודות עניין #' + (index + 1) + '</strong><br>';
-                        if (station.company) {
-                            html += '<span style="color: #333;">חברה: </span><strong>' + station.company + '</strong><br>';
+                    // Loop through each layer
+                    response1.forEach(function(layer) {
+                        if (layer.features && layer.features.length > 0) {
+                            html += '<div style="background: #e8f5e9; padding: 15px; margin: 15px 0; border-radius: 8px; border-right: 5px solid #4CAF50;">';
+                            html += '<h4 style="margin: 0 0 10px 0; color: #2e7d32;">שכבה: ' + layer.layerName + '</h4>';
+                            html += '<p style="margin: 5px 0; color: #666;">נמצאו ' + layer.features.length + ' פריטים</p>';
+                            
+                            // Loop through features in this layer
+                            layer.features.forEach(function(feature, index) {
+                                html += '<div style="background: white; padding: 10px; margin: 8px 0; border-radius: 5px; border-right: 3px solid #81c784;">';
+                                html += '<strong>פריט #' + (index + 1) + '</strong><br>';
+                                
+                                // Display all attributes
+                                if (feature.attributes) {
+                                    for (var key in feature.attributes) {
+                                        html += '<span style="color: #555;">' + key + ': </span><strong>' + feature.attributes[key] + '</strong><br>';
+                                    }
+                                }
+                                
+                                html += '</div>';
+                            });
+                            
+                            html += '</div>';
                         }
-                        if (station.objectid) {
-                            html += '<span style="color: #666;">מזהה: ' + station.objectid + '</span>';
-                        }
-                        html += '</div>';
                     });
                     
                     html += '</div>';
                     html += '<hr style="margin: 20px 0;">';
-                    html += '<h4 style="color: #667eea;">נתונים גולמיים</h4>';
+                    html += '<h4 style="color: #667eea;">נתונים גולמיים (JSON):</h4>';
                     html += '<pre style="background: white; padding: 10px; border-radius: 5px; overflow-x: auto;">' + JSON.stringify(response1, null, 2) + '</pre>';
                     
                     resultsDiv.innerHTML = html; 
                     
                 } else { 
-                    resultsDiv.innerHTML = '<p style="color: #f44336;">❌ לא נמצאו נקודות עניין באזור שנבחר. נסה לבחור אזור אחר.</p>'; 
+                    resultsDiv.innerHTML = '<p style="color: #f44336;">❌ לא נמצאו תוצאות באזור שנבחר. נסה לבחור אזור אחר.</p>'; 
                 } 
                 
             }).catch(function(error) { 
@@ -226,8 +255,8 @@
 
 <body> 
     <div id="header"> 
-        <h1>שקד גולן GovMap</h1> 
-        <div style="font-size: 18px;">אתר קיבוץ עינת</div> 
+        <h1>מערכת מיפוי GovMap</h1> 
+        <div style="font-size: 18px;">ניתוח שכבות מפה - כל השכבות</div> 
     </div> 
 
     <div id="map-container"> 
@@ -240,4 +269,3 @@
     </div> 
 </body> 
 </html>
-

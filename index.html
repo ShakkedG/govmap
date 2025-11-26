@@ -2,30 +2,35 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Vue Project</title>
+    <title>Vue Counter</title>
 
-    <!-- טעינת Vue מה-CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
 
-    <!-- כאן נציג את התוכן -->
-    <div id="app">
-        {{ message }}
+    <!-- ROOT -->
+    <div id="root">
+
+        <h2>המספר הוא: {{ count }}</h2>
+
+        <button @click="count++">
+            הגדל
+        </button>
+        <button @click="count = 0">אפס</button>
+
     </div>
+    
 
     <script>
-        // יצירת אפליקציית Vue
-        const app = Vue.createApp({
+        const vue = Vue.createApp({
             data() {
                 return {
-                    message: "שלום שקד! זה הטקסט הראשון שלך ב-Vue 🎉"
-                };
+                    count: 10   // המספר ההתחלתי
+                }
             }
         });
 
-        // חיבור ל-HTML
-        app.mount("#app");
+        vue.mount("#root");
     </script>
 
 </body>

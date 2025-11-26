@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>רשימת משימות</title>
+    <title>מחשבון מילים</title>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
@@ -10,25 +10,19 @@
 
     <div id="root">
 
-        <h2>Word counter</h2>
+        <h2>מחשבון מילים ותווים</h2>
 
-        <!-- שדה להזנת משימה חדשה -->
-        <input v-model="sentence" placeholder="הקלד משפט">
+        <!-- שדה טקסט -->
+        <input v-model="text" placeholder="הקלד משפט..." style="width: 300px;">
 
-        <!-- כפתורי הוספה לפי עדיפות -->
-        <button @click="addsentence()">הכנס</button>
-        <button @click="addTask()">נקה</button>
-       
+        <!-- כפתור ניקוי -->
+        <button @click="clear">נקה</button>
 
         <hr>
 
-        <!-- רשימת משימות -->
-        <ul>
-            <li v-for="sentence, index) in tasks">
-                 במשפט יש: {{ sentence.split(""}.length } אותיות
-                <button @click="removeTask(index)">מחק</button>
-            </li>
-        </ul>
+        <!-- תוצאות -->
+        <p>מספר מילים: {{ wordCount }}</p>
+        <p>מספר תווים: {{ charCount }}</p>
 
     </div>
 
@@ -37,28 +31,26 @@
         const vue = Vue.createApp({
             data() {
                 return {
-                    newTask: "",      // הטקסט שהמשתמש מקליד
-                    tasks: []         // מערך של משימות
+                    text: ""     // הטקסט שהמשתמש מקליד
+                }
+            },
+
+            computed: {
+                // ספירת מילים
+                wordCount() {
+                    if (this.text.trim() === "") return 0;
+                    return this.text.trim().split(/\s+/).length;
+                },
+
+                // ספירת תווים
+                charCount() {
+                    return this.text.length;
                 }
             },
 
             methods: {
-                addsentence() {
-                    // אם השדה ריק — לא מוסיפים
-                    if (this.newTask.trim() === "") return;
-
-                    // הוספת אובייקט חדש למערך
-                    this.tasks.push({
-                        text: this.newTask,
-                        priority: priority
-                    });
-
-                    // ניקוי השדה
-                    this.newTask = "";
-                },
-
-                removeTask(index) {
-                    this.tasks.splice(index, 1);
+                clear() {
+                    this.text = "";
                 }
             }
         });
@@ -68,4 +60,3 @@
 
 </body>
 </html>
-

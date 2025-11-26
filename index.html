@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
-        <script type="text/javascript">
-            function initGovMap() {
-                govmap.createMap('map', {
-                    onClick: function (e) {
-                        console.log('onClick', e);
-                    },
-                    onPan: function (e) {
-                        console.log('onPan', e);
-                    },
-                    token: 'ede9a5fd-7c23-432f-8ffb-d85feffa3f3c',
-                    layers: ["GASSTATIONS","PARCEL_HOKS", "KSHTANN_ASSETS", "bus_stops", "PARCEL_ALL","219111","219113","219114"],
-                    showXY: true,
-                    identifyOnClick: true,
-                    isEmbeddedToggle: true,
-                    background: "2",
-                    layersMode: 1,
-                    zoomButtons:false
-                });
+<head>
+    <meta charset="UTF-8">
+    <title>Vue Project</title>
+
+    <!-- טעינת Vue מה-CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+
+    <!-- כאן נציג את התוכן -->
+    <div id="app">
+        {{ message }}
+    </div>
+
+    <script>
+        // יצירת אפליקציית Vue
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "שלום שקד! זה הטקסט הראשון שלך ב-Vue 🎉"
+                };
             }
+        });
+
+        // חיבור ל-HTML
+        app.mount("#app");
     </script>
-    </head>
-    <body>
-        <div id="map" style="width:1900px;height:900px;">
-        </div>
-    </body>
+
+</body>
 </html>

@@ -2,30 +2,63 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Vue Counter</title>
+    <title>רשימת משימות</title>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
 
-    <!-- ROOT -->
     <div id="root">
 
-        <h2>המספר הוא: {{ count }}</h2>
+        <h2>רשימת משימות</h2>
 
-        <button @click="count++">
-            הגדל
-        </button>
-        <button @click="count = 0">אפס</button>
+        <!-- שדה להזנת משימה חדשה -->
+        <input v-model="newTask" placeholder="הקלד משימה">
+
+        <!-- כפתורי הוספה לפי עדיפות -->
+        <button @click="addTask('נמוכה')">הוסף בעדיפות נמוכה</button>
+        <button @click="addTask('בינונית')">הוסף בעדיפות בינונית</button>
+        <button @click="addTask('גבוהה')">הוסף בעדיפות גבוהה</button>
+
+        <hr>
+
+        <!-- רשימת משימות -->
+        <ul>
+            <li v-for="(task, index) in tasks">
+                {{ task.text }} — עדיפות: {{ task.priority }}
+                <button @click="removeTask(index)">מחק</button>
+            </li>
+        </ul>
 
     </div>
-    
+
 
     <script>
         const vue = Vue.createApp({
             data() {
                 return {
-                    count: 10   // המספר ההתחלתי
+                    newTask: "",      // הטקסט שהמשתמש מקליד
+                    tasks: []         // מערך של משימות
+                }
+            },
+
+            methods: {
+                addTask(priority) {
+                    // אם השדה ריק — לא מוסיפים
+                    if (this.newTask.trim() === "") return;
+
+                    // הוספת אובייקט חדש למערך
+                    this.tasks.push({
+                        text: this.newTask,
+                        priority: priority
+                    });
+
+                    // ניקוי השדה
+                    this.newTask = "";
+                },
+
+                removeTask(index) {
+                    this.tasks.splice(index, 1);
                 }
             }
         });

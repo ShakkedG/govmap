@@ -10,22 +10,22 @@
 
     <div id="root">
 
-        <h2>רשימת משימות</h2>
+        <h2>Word counter</h2>
 
         <!-- שדה להזנת משימה חדשה -->
-        <input v-model="newTask" placeholder="הקלד משימה">
+        <input v-model="sentence" placeholder="הקלד משפט">
 
         <!-- כפתורי הוספה לפי עדיפות -->
-        <button @click="addTask('נמוכה')">הוסף בעדיפות נמוכה</button>
-        <button @click="addTask('בינונית')">הוסף בעדיפות בינונית</button>
-        <button @click="addTask('גבוהה')">הוסף בעדיפות גבוהה</button>
+        <button @click="addsentence()">הכנס</button>
+        <button @click="addTask()">נקה</button>
+       
 
         <hr>
 
         <!-- רשימת משימות -->
         <ul>
-            <li v-for="(task, index) in tasks">
-                {{ task.text }} — עדיפות: {{ task.priority }}
+            <li v-for="sentence, index) in tasks">
+                 במשפט יש: {{ sentence.split(""}.length } אותיות
                 <button @click="removeTask(index)">מחק</button>
             </li>
         </ul>
@@ -43,7 +43,7 @@
             },
 
             methods: {
-                addTask(priority) {
+                addsentence() {
                     // אם השדה ריק — לא מוסיפים
                     if (this.newTask.trim() === "") return;
 
@@ -68,3 +68,4 @@
 
 </body>
 </html>
+

@@ -1,62 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>מחשבון מילים</title>
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-</head>
-<body>
-
-    <div id="root">
-
-        <h2>מחשבון מילים ותווים</h2>
-
-        <!-- שדה טקסט -->
-        <input v-model="text" placeholder="הקלד משפט..." style="width: 300px;">
-
-        <!-- כפתור ניקוי -->
-        <button @click="clear">נקה</button>
-
-        <hr>
-
-        <!-- תוצאות -->
-        <p>מספר מילים: {{ wordCount }}</p>
-        <p>מספר תווים: {{ charCount }}</p>
-
-    </div>
-
-
-    <script>
-        const vue = Vue.createApp({
-            data() {
-                return {
-                    text: ""     // הטקסט שהמשתמש מקליד
-                }
-            },
-
-            computed: {
-                // ספירת מילים
-                wordCount() {
-                    if (this.text.trim() === "") return 0;
-                    return this.text.trim().split(/\s+/).length;
-                },
-
-                // ספירת תווים
-                charCount() {
-                    return this.text.length;
-                }
-            },
-
-            methods: {
-                clear() {
-                    this.text = "";
-                }
-            }
-        });
-
-        vue.mount("#root");
-    </script>
-
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+    <script src="https://www.govmap.gov.il/govmap/api/govmap.api.js" defer onload="initGovMap()"></script>
+    <script type="text/javascript">
+        function initGovMap() {
+            govmap.createMap('map', {
+                token: 'YOUR_API_TOKEN',
+                layers: ["GASSTATIONS"],
+                showXY: true,
+                identifyOnClick: true,
+                isEmbeddedToggle: false,
+                background: 3,
+                layersMode: 1,
+                zoomButtons:false
+            });
+        }
+        function showExample() {
+            var params = {
+                layerName: '2756',
+            };
+            govmap.getLayerEntities(params).then(function(response) {
+                console.log(response);
+            });
+        }
+   </script>
+ </head>
+ <body>
+    <div id="map" style="width:600px;height:600px;"></div>
+    <button onClick="showExample()">Show Example</button>
+ </body>
 </html>
